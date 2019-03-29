@@ -2,9 +2,9 @@
   "name": "game-node-project",
   "version": "1.0.1",
   "description": "learning websoket and non-blocking with nodejs",
-  "main": "server.js",
+  "main": "smartcloud-server.js",
   "scripts": {
-    "start": "node server.js",
+    "start": "node smartcloud-server.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",
