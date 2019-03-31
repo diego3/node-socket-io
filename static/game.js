@@ -2,7 +2,7 @@
 
 var socket = io();
 socket.on('message', function(data) {
-  console.log(data);
+  //console.log(data);
 });
 
 socket.emit('new-player');
@@ -52,7 +52,7 @@ document.addEventListener('keyup', function(event) {
 });
 
 document.addEventListener('click', function(evt){
-    console.log('click', evt);
+    //console.log('click', evt);
     //var r = socket.send('click', 'hello server');
     var r = socket.emit('click', 'hello server');
     //console.log('send return', r);

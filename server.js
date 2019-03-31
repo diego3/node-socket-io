@@ -10,7 +10,10 @@ app.set('port', 8080);
 app.use('/static', express.static(__dirname + '/static'));
 // Routing
 app.get('/', function(request, response) {
-  response.sendFile(path.join(__dirname, 'index.html'));
+  response.sendFile(path.join(__dirname, '/static/index.html'));
+});
+app.get('/js-data', function(request, response) {
+  response.sendFile(path.join(__dirname, '/static/game-data-structures.html'));
 });
 // Starts the server.
 server.listen(8080, function() {
@@ -23,10 +26,14 @@ var players = [];
 io.on('connection', function(socket) {
     socket.on('new-player', (data) => {
         console.log('new-player', socket.id);
-        players[socket.id] = {
+        // players[socket.id] = {
+        //   x : 300,
+        //   y : 300
+        // }
+        players.push({
           x : 300,
           y : 300
-        }
+        });
     });
 
     socket.on('click', function(data){
@@ -56,5 +63,5 @@ setInterval(function() {
 }, 1000);
 
 setInterval(function() {
-  io.sockets.emit('state', players);
+  //io.sockets.emit('state', players);
 }, 1000 / 60);

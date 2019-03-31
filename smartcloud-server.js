@@ -19,21 +19,35 @@ server.listen(OPENSHIFT_PORT, function() {
   console.log('Starting server on port '+OPENSHIFT_PORT);
 });
 
-var users = [];
+var users = new Map();
 
 // Add the WebSocket handlers
 io.on('connection', function(socket) {
-    socket.on('new-user', (userId) => {
-        console.log('new-user', socket.id);
-        users[socket.id] = {
-            id: userId
-        }
+    socket.on('new-user', (userId, userName) => {
+        console.log('new-user', socket.id, userName);
+        // users[String(socket.id)] = {
+        //     id: userId,
+        //     name: userName
+        // };
+        // users.push({
+        //     id: userId,
+        //     name: userName
+        // });
+        var user =  {
+            id: userId,
+            name: userName
+        };
+        users.set(socket.id, user);
+        console.log('users', users);
         io.sockets.emit('logged-users', users);
     });
   
     socket.on('disconnect', (reason) => {
         io.sockets.emit('user-exit', socket.id);
-        delete users[socket.id];
+        console.log('user-exit', socket.id);
+        //delete users[socket.id];
+        users.delete(socket.id);
+        console.log('users Map', users);
     });
 });
 
