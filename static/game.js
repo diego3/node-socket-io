@@ -2,7 +2,7 @@
 
 var socket = io();
 socket.on('message', function(data) {
-  //console.log(data);
+  console.log(data);
 });
 
 socket.emit('new-player');
@@ -30,7 +30,7 @@ document.addEventListener('keydown', function(event) {
       movement.down = true;
       break;
   }
-  logging = false;
+  //logging = false;
   socket.emit('movement', movement);
 });
 document.addEventListener('keyup', function(event) {
@@ -72,12 +72,12 @@ socket.on('state', function(players) {
   if(logging){
     console.log('on state', players);
   }
-  // context.clearRect(0, 0, 800, 600);
-  // context.fillStyle = 'green';
-  // for (var id in players) {
-  //   var player = players[id];
-  //   context.beginPath();
-  //   context.arc(player.x, player.y, 10, 0, 2 * Math.PI);
-  //   context.fill();
-  // }
+  context.clearRect(0, 0, 800, 600);
+  context.fillStyle = 'green';
+  for (var id in players) {
+    var player = players[id];
+    context.beginPath();
+    context.arc(player.x, player.y, 10, 0, 2 * Math.PI);
+    context.fill();
+  }
 });

@@ -24,7 +24,9 @@
                     <canvas id="canvas"></canvas> 
               </div>
               <div class="col-sm">
-                    <button type="button" class="btn btn-primary" id="btnMap">Map</button>
+                    <button type="button" class="btn btn-primary" id="btnMap">Map</button><br>
+                    <button type="button" class="btn btn-primary" id="btnDict1">Dict1</button><br>
+                    <button type="button" class="btn btn-primary" id="btnDict2">Array Map</button><br>
               </div>
           </div>
       </div>
@@ -38,15 +40,30 @@
   </body>
 
     <script>
+        
         var socket = io();
         $(document).ready(function(evt){
             $('#btnMap').on('click', function(evt){
                 socket.emit('map');
             });
 
+            $('#btnDict1').on('click', function(evt){
+                socket.emit('dict1');
+            });
+
+            $('#btnDict2').on('click', function(evt){
+                socket.emit('dict2');
+            });
+
 
             socket.on('get-map', function(data){
                 console.log('map', data); 
+            });
+            socket.on('get-dict1', function(data){
+                console.log('dict1', data); 
+            });
+            socket.on('get-dict2', function(data){
+                console.log('dict2', data); 
             });
         });
     </script>
