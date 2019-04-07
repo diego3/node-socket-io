@@ -1,0 +1,88 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+
+    <title>Pong</title>
+    <style>
+      canvas {
+        width: 450px;
+        height: 600px;
+        border: 5px solid #000000;
+      }
+    </style>
+  </head>
+  <body>
+      <div class="container">
+          <div class="row">
+              <div class="col-sm">
+                    <canvas id="canvas"></canvas> 
+              </div>
+              <div class="col-sm">
+                  <div id="div-entrar">
+                    <input type="text" class="form form-control" id="user-name" placeholder="nickname..."><br>
+                    <button type="button" class="btn btn-primary" id="btnJoin">Entrar</button><br>   
+                  </div>
+
+                  <button type="button" class="btn btn-default" id="btnAdversario">Escolher adversário</button><br>   
+                  <button typse="button" class="btn btn-success" id="btnPlay">Jogar</button><br> 
+                  <span id="connected-clients">0</span> usuários conectados.<br>
+              </div>
+          </div>
+      </div>
+
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+    <script src="/socket.io/socket.io.js"></script>
+  </body>
+
+    <script>
+        var clientes = {};
+        var socket = io();
+        $(document).ready(function(evt){
+            $('#btnJoin').on('click', function(evt){
+                $('#div-entrar').hide();
+                socket.emit('join', $('#user-name').val());
+            });
+
+            $('#btnPlay').on('click', function(evt){
+                var numPlayers = parseInt($('#connected-clients').text());
+                if(numPlayers < 2){
+                  console.log('insuficient players');
+                  return;
+                }
+                
+                var players = [];
+                if(numPlayers > 2){
+                  // random only 2
+                }else {
+
+                }
+
+                // todo, start game passing the 2 selected players
+                // Pong.start(players);
+                // socket.emit('pong-start', players);
+            });
+
+
+            // to get connected clients on page load.
+            socket.emit('get-clients');
+            
+            socket.on('clients', function(data){
+              console.log('clients', data);
+              clientes = data;
+              var len = Object.keys(data).length;
+              $('#connected-clients').text(len);
+            });
+           
+        });
+    </script>
+</html>
