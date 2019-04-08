@@ -20,19 +20,38 @@ server.listen(PORT, function() {
 });
 
 
+function randomInt(min, max) {
+    return Math.floor(Math.random() * (max - min + 1) ) + min;
+}
+
 var clients = {};
+var colors = ['red', 'green', 'blue', 'pink', 'yellow'];
+
+function getRandomColor(){
+    var i = randomInt(0, colors.length-1);
+    return colors[i];
+}
+
+io.on('connect', (socket) =>{
+    clients[socket.id] = {
+        color: getRandomColor()
+     };
+     console.log('join', socket.id);
+     console.log(clients);
+     io.sockets.emit('clients', clients);
+});
 
 // Add the WebSocket handlers
 io.on('connection', function(socket) {
 
-    socket.on('join', (username) => {
-        clients[socket.id] = {
-           name: username
-        };
-        console.log('join', socket.id);
-        console.log(clients);
-        io.sockets.emit('clients', clients);
-    });
+    // socket.on('connect', (username) => {
+    //     // clients[socket.id] = {
+    //     //    name: username
+    //     // };
+    //     // console.log('join', socket.id);
+    //     // console.log(clients);
+    //     // io.sockets.emit('clients', clients);
+    // });
 
     socket.on('get-clients', () => {
       io.sockets.emit('clients', clients);
@@ -41,7 +60,7 @@ io.on('connection', function(socket) {
     socket.on('disconnect', () => {
         console.log('exited', socket.id);
         delete clients[socket.id];
-        io.sockets.emit('exited', socketd.id);
+        io.sockets.emit('exited', socket.id);
         io.sockets.emit('clients', clients);
     });
   

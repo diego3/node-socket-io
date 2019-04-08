@@ -10,13 +10,19 @@
 
     <title>Pong</title>
     <style>
-     
+        input {
+            margin-bottom: -25px !important;
+            width: 125px !important;
+        }
     </style>
   </head>
   <body>
       <div class="container">
           <div class="row">
               <div class="col-sm">
+                  <input class=""><br>
+                  <input class=""><br>
+                  <input class=""><br>
               </div>
               <div class="col-sm">
                   <span id="connected-clients">0</span> usuários conectados.<br>
@@ -34,10 +40,14 @@
 
     <script>
         var clientes = {};
+        var myId = null;
+        var myColor = '';
         var socket = io();
-        $(document).ready(function(evt){
-        
+        socket.on('connect', () => {
+            myID  = socket.id;
+        });
 
+        $(document).ready(function(evt){
             // to get connected clients on page load.
             socket.emit('get-clients');
             
@@ -48,6 +58,24 @@
               $('#connected-clients').text(len);
             });
            
+            $(document).on('keyup', function(evt){
+                console.log('up', evt);
+            });
+            $(document).on('keydown', function(evt){
+                console.log('down', evt.key, evt.keyCode);
+            });
+
+            $('input').on('focusin', function(evt){
+                console.log('focusin');
+                console.log('clientes', clientes);
+                console.log('myID', myID);
+                console.log('myID typeof', typeof myID);
+                console.log('me',  clientes.myID);
+                console.log('hasOwnProperty',  clientes.hasOwnProperty(myId));
+                //console.log('myColor is', clientes[myId].color);
+                $(this).css({borderColor:myColor});
+            });
+
         });
     </script>
 </html>
